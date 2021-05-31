@@ -5,7 +5,9 @@ const dragElems = document.querySelectorAll('article');
 const dragArea = document.querySelectorAll('main')[0];
 const dropArea = document.querySelectorAll('main')[1];
 
-console.log(dragElems);
+dragElems.forEach(elem => elem.setAttribute('draggable', 'true'));
+
+dragElems.forEach(elem => console.log('ss', elem.attributes));
 
 console.log(dragArea);
 console.log(dropArea);
