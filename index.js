@@ -9,4 +9,5 @@ const dropArea = document.querySelectorAll('main')[1];
 setDraggable();
 setDropable();
 
+console.log(dragElems);
 console.log(dropArea);
