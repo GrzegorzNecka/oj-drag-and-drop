@@ -3,8 +3,8 @@ import './style.css';
 
 // import { isDraggableSupported } from './isDraggableSupported';
 
-const draggablesElems = document.querySelectorAll('article');
-const dropArea = document.querySelectorAll('main');
+let draggablesElems = document.querySelectorAll('article');
+let dropArea = document.querySelectorAll('main');
 
 // isDraggableSupported();
 
@@ -30,6 +30,11 @@ document.querySelectorAll('article').forEach(article => {
 // ---------------- drop ----------------------
 
 document.querySelectorAll('main').forEach(main => {
+  main.addEventListener('mouseenter', () => {
+    draggablesElems = document.querySelectorAll('article');
+    dropArea = document.querySelectorAll('main');
+  });
+
   main.addEventListener('dragover', e => {
     console.log('dragover');
     e.preventDefault();
