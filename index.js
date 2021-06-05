@@ -16,7 +16,7 @@ console.log(dropArea);
 dragElems.forEach(article => {
   //
   article.ondragstart = function(e) {
-    e.dataTransfer.effectAllowed = 'copy';
+    e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', this.outerHTML);
     e.dataTransfer.setData('text/plain', 'siema');
     e.dataTransfer.setData('text/custom', 'yo');
@@ -25,7 +25,9 @@ dragElems.forEach(article => {
   };
 
   article.ondragend = function(e) {
-
+    if (e.dataTransfer.dropEffect == 'copy') {
+      article.parentNode.removeChild(article);
+    }
     //console.log('zakończono przeciąganie');
   };
 
@@ -39,10 +41,12 @@ dragElems.forEach(article => {
 
 dropArea.ondragenter = function(e) {
   console.log('ondragenter');
+  //console.log('obiekt w obszarze zrzutu');
 };
 
 dropArea.ondragleave = function(e) {
   console.log('ondragleave');
+  //console.log('obiekt opuścił obszar zrzutu');
 };
 
 dropArea.ondragover = function(e) {
@@ -53,8 +57,8 @@ dropArea.ondragover = function(e) {
 
 dropArea.ondrop = function(e) {
   e.preventDefault();
-
-  if (e.dataTransfer.effectAllowed != 'copy') return;
+  //event wykonuje się wiele razy
+  // if (e.dataTransfer.effectAllowed != 'copy') return;
 
   // const data =
   //   e.dataTransfer.getData('text/plain') +
@@ -62,5 +66,5 @@ dropArea.ondrop = function(e) {
   // console.log('ondrop', data);
 
   const data = e.dataTransfer.getData('text/html');
-  dropArea.innerHTML = data;
+  dropArea.innerHTML += data;
 };
