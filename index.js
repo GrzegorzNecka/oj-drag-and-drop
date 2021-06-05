@@ -1,12 +1,14 @@
 // Import stylesheets
 import './style.css';
 
-import { isDraggableSupported } from './isDraggableSupported';
+// import { isDraggableSupported } from './isDraggableSupported';
 
 const draggablesElems = document.querySelectorAll('article');
 const dropArea = document.querySelectorAll('main')[1];
 
-isDraggableSupported();
+// isDraggableSupported();
+
+// ---------------- drag ----------------------
 
 draggablesElems.forEach(article => {
   article.addEventListener('dragstart', e => {
@@ -22,6 +24,8 @@ draggablesElems.forEach(article => {
     }
   });
 });
+
+// ---------------- drop ----------------------
 
 dropArea.addEventListener('dragover', e => {
   e.preventDefault();
