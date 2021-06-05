@@ -16,7 +16,11 @@ console.log(dropArea);
 dragElems.forEach(article => {
   //
   article.ondragstart = function(e) {
-    e.dataTransfer.effectAllowed = 'copy';
+    console.log('target', e.target.tagName);
+
+    if (e.target.tagName !== 'ARTICLE') return;
+
+    e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', this.outerHTML);
     e.dataTransfer.setData('text/plain', 'siema');
     e.dataTransfer.setData('text/custom', 'yo');
@@ -57,6 +61,7 @@ dropArea.ondragover = function(e) {
 
 dropArea.ondrop = function(e) {
   e.preventDefault();
+
   //event wykonuje się wiele razy
   // if (e.dataTransfer.effectAllowed != 'copy') return;
 
