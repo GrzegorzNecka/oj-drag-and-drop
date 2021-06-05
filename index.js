@@ -14,19 +14,28 @@ console.log(dragElems);
 console.log(dropArea);
 
 dragElems.forEach(article => {
+  //
   article.ondragstart = function(e) {
+    e.dataTransfer.effectAllowed = 'copy';
+    e.dataTransfer.setData('text/html', this.outerHTML);
     e.dataTransfer.setData('text/plain', 'siema');
-    console.log('ondragstart');
+    e.dataTransfer.setData('text/custom', 'yo');
+    console.log(e.dataTransfer.effectAllowed);
+    //console.log('rozpoczęto przeciąganie');
   };
 
   article.ondragend = function(e) {
-    console.log('ondragend');
+
+    //console.log('zakończono przeciąganie');
   };
 
   article.ondrag = function(e) {
-    console.log('ondrag');
+    // console.log('przeciąganie w toku');
+    //event wykonuje się wiele razy
   };
 });
+
+//dropArea events
 
 dropArea.ondragenter = function(e) {
   console.log('ondragenter');
@@ -38,11 +47,20 @@ dropArea.ondragleave = function(e) {
 
 dropArea.ondragover = function(e) {
   e.preventDefault();
-  console.log('ondragover');
+
   return false;
 };
 
 dropArea.ondrop = function(e) {
-  const data = e.dataTransfer.getData('text/plain');
-  console.log('ondrop', data);
+  e.preventDefault();
+
+  if (e.dataTransfer.effectAllowed != 'copy') return;
+
+  // const data =
+  //   e.dataTransfer.getData('text/plain') +
+  //   e.dataTransfer.getData('text/custom');
+  // console.log('ondrop', data);
+
+  const data = e.dataTransfer.getData('text/html');
+  dropArea.innerHTML = data;
 };
