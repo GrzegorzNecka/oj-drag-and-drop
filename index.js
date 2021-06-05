@@ -15,6 +15,7 @@ console.log(dropArea);
 
 dragElems.forEach(article => {
   article.ondragstart = function(e) {
+    e.dataTransfer.setData('text/plain', 'siema');
     console.log('ondragstart');
   };
 
@@ -27,15 +28,12 @@ dragElems.forEach(article => {
   };
 });
 
-
 dropArea.ondragenter = function(e) {
   console.log('ondragenter');
 };
 
 dropArea.ondragleave = function(e) {
-  e.preventDefault();
   console.log('ondragleave');
-  return false;
 };
 
 dropArea.ondragover = function(e) {
@@ -45,5 +43,6 @@ dropArea.ondragover = function(e) {
 };
 
 dropArea.ondrop = function(e) {
-  console.log('ondrop');
+  const data = e.dataTransfer.getData('text/plain');
+  console.log('ondrop', data);
 };
