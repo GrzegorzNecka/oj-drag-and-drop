@@ -4,14 +4,16 @@ import './style.css';
 // import { isDraggableSupported } from './isDraggableSupported';
 
 const draggablesElems = document.querySelectorAll('article');
-const dropArea = document.querySelectorAll('main')[1];
+const dropArea = document.querySelectorAll('main');
 
 // isDraggableSupported();
 
 // ---------------- drag ----------------------
 
-draggablesElems.forEach(article => {
+document.querySelectorAll('article').forEach(article => {
   article.addEventListener('dragstart', e => {
+    console.log(document.querySelectorAll('article'));
+    console.log('start');
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', article.outerHTML);
     article.classList.add('dragging');
@@ -27,14 +29,18 @@ draggablesElems.forEach(article => {
 
 // ---------------- drop ----------------------
 
-dropArea.addEventListener('dragover', e => {
-  e.preventDefault();
-  return false;
-});
+document.querySelectorAll('main').forEach(main => {
+  main.addEventListener('dragover', e => {
+    console.log('dragover');
+    e.preventDefault();
+    return false;
+  });
 
-dropArea.addEventListener('drop', e => {
-  e.preventDefault();
-  const data = e.dataTransfer.getData('text/html');
-  const fragment = document.createRange().createContextualFragment(data);
-  dropArea.appendChild(fragment);
+  main.addEventListener('drop', e => {
+    console.log(document.querySelectorAll('main'));
+    e.preventDefault();
+    const data = e.dataTransfer.getData('text/html');
+    const fragment = document.createRange().createContextualFragment(data);
+    main.appendChild(fragment);
+  });
 });
