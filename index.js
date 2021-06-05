@@ -27,11 +27,23 @@ dragElems.forEach(article => {
   };
 });
 
+
+dropArea.ondragenter = function(e) {
+  console.log('ondragenter');
+};
+
+dropArea.ondragleave = function(e) {
+  e.preventDefault();
+  console.log('ondragleave');
+  return false;
+};
+
 dropArea.ondragover = function(e) {
   e.preventDefault();
+  console.log('ondragover');
   return false;
 };
 
 dropArea.ondrop = function(e) {
-  console.log('upuszczono');
+  console.log('ondrop');
 };
