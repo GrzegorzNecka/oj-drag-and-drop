@@ -16,8 +16,8 @@ draggablesElems.forEach(article => {
   });
 
   article.addEventListener('dragend', e => {
-    article.classList.remove('dragging');
     if (e.dataTransfer.dropEffect == 'move') {
+      article.classList.remove('dragging');
       article.parentNode.removeChild(article);
     }
   });
