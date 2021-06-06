@@ -3,9 +3,9 @@ function dragStart() {
 }
 
 function dragEnd(e) {
-  const article = e.target;
-  if (article.classList.contains('dragging')) {
-    article.classList.remove('dragging');
+  const draggingItem = e.target;
+  if (draggingItem.classList.contains('dragging')) {
+    draggingItem.classList.remove('dragging');
   }
 }
 

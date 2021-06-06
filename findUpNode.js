@@ -1,4 +1,4 @@
-function findUpTag(el, tag) {
+function findUpNode(el, tag) {
   while (el.parentNode) {
     el = el.parentNode;
     if (el.tagName === tag) return el;
@@ -6,4 +6,4 @@ function findUpTag(el, tag) {
   return null;
 }
 
-export default findUpTag;
+export default findUpNode;

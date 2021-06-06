@@ -8,13 +8,13 @@ import { dropForItem, drop } from './dropMethods';
 const draggableItems = document.querySelectorAll('article');
 const dropAreas = document.querySelectorAll('main');
 
-//--- check browser support ---
+//--- CHECK SUPPORT  ---
 
 if (!isDraggableSupported()) {
   return;
 }
 
-//--- DRAG ---
+//--- ITEMS EVENTS ---
 
 draggableItems.forEach(item => {
   item.addEventListener('dragstart', dragStart);
@@ -22,7 +22,7 @@ draggableItems.forEach(item => {
   item.addEventListener('drop', dropForItem);
 });
 
-//--- DROP ---
+//--- DROP ZONES EVENTS ---
 
 dropAreas.forEach(area => {
   area.addEventListener('dragenter', dragEnter);

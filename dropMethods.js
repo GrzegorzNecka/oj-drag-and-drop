@@ -1,14 +1,14 @@
-import findUpTag from './findUpTag';
+import findUpNode from './findUpNode';
 
 // -- DROP METHODS FOR AREA
 
 function drop(e) {
   e.preventDefault();
 
-  const nodeName = e.target.nodeName === 'MAIN';
+  const dropZone = e.target.nodeName === 'MAIN';
   const dragging = document.querySelector('.dragging');
 
-  if (dragging && nodeName) {
+  if (dragging && dropZone) {
     e.target.appendChild(dragging);
   }
 }
@@ -16,11 +16,11 @@ function drop(e) {
 // -- DROP METHODS FOR ITEMS
 
 function dropForItem(e) {
-  const article = findUpTag(e.target, 'ARTICLE');
-  const main = findUpTag(e.target, 'MAIN');
+  const existItem = findUpNode(e.target, 'ARTICLE');
+  const dropZone = findUpNode(e.target, 'MAIN');
   const dragging = document.querySelector('.dragging');
 
-  main.insertBefore(dragging, article);
+  dropZone.insertBefore(dragging, existItem);
 }
 
 export { dropForItem, drop };
