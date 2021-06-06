@@ -1,48 +1,59 @@
-// Import stylesheets
-import './style.css';
-import { setDraggable, setDropable } from './setDragAndDropAttr';
-import { isDraggableSupported } from './isDraggableSupported';
+const draggableItems = document.querySelectorAll('article');
+const dropAreas = document.querySelectorAll('main');
 
-const dragElems = document.querySelectorAll('article');
-const dragArea = document.querySelectorAll('main')[0];
-const dropArea = document.querySelectorAll('main')[1];
-isDraggableSupported();
-// setDraggable();
-// setDropable();
+//--- DRAG ---
 
-console.log(dragElems);
-console.log(dropArea);
+function dragStart(e) {
+  console.log('dragStart');
+  this.classList.add('dragging');
+}
 
-dragElems.forEach(article => {
-  article.ondragstart = function(e) {
-    e.dataTransfer.setData('text/plain', 'siema');
-    console.log('ondragstart');
-  };
+function dragEnd(e) {
+  console.log('dragEnd');
 
-  article.ondragend = function(e) {
-    console.log('ondragend');
-  };
+  if (e.target.classList.contains('dragging')) {
+    this.classList.remove('dragging');
+  }
+}
 
-  article.ondrag = function(e) {
-    console.log('ondrag');
-  };
+draggableItems.forEach(item => {
+  item.addEventListener('dragstart', dragStart);
+  item.addEventListener('dragend', dragEnd);
 });
 
-dropArea.ondragenter = function(e) {
-  console.log('ondragenter');
-};
+//--- DROP ---
 
-dropArea.ondragleave = function(e) {
-  console.log('ondragleave');
-};
-
-dropArea.ondragover = function(e) {
+function dragEnter(e) {
   e.preventDefault();
-  console.log('ondragover');
-  return false;
-};
+  console.log('dragEnter');
+}
 
-dropArea.ondrop = function(e) {
-  const data = e.dataTransfer.getData('text/plain');
-  console.log('ondrop');
-};
+function dragOver(e) {
+  e.preventDefault();
+  console.log('dragOver');
+}
+function dragLeave(e) {
+  e.preventDefault();
+  console.log('dragLeave');
+}
+
+function drop(e) {
+  e.preventDefault();
+
+  const nodeName = e.target.nodeName === 'MAIN';
+  const dragging = document.querySelector('.dragging');
+
+  console.dir(e.target);
+  if (dragging && nodeName) {
+    e.target.appendChild(dragging);
+  }
+
+  console.log('drop');
+}
+
+dropAreas.forEach(area => {
+  area.addEventListener('dragenter', dragEnter);
+  area.addEventListener('dragover', dragOver);
+  area.addEventListener('dragleave', dragLeave);
+  area.addEventListener('drop', drop);
+});
