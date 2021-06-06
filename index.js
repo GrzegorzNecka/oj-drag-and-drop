@@ -3,12 +3,7 @@ import './style.css';
 import { isDraggableSupported } from './isDraggableSupported';
 import { dragEnter, dragOver, dragLeave } from './dragDefaultMethods';
 import { dragStart, dragEnd } from './dragMethods';
-import {
-  dragEnterForItem,
-  dragLeaveForItem,
-  dropForItem,
-  drop
-} from './dropMethods';
+import { dropForItem, drop } from './dropMethods';
 
 const draggableItems = document.querySelectorAll('article');
 const dropAreas = document.querySelectorAll('main');
@@ -24,8 +19,6 @@ if (!isDraggableSupported()) {
 draggableItems.forEach(item => {
   item.addEventListener('dragstart', dragStart);
   item.addEventListener('dragend', dragEnd);
-  item.addEventListener('dragenter', dragEnterForItem);
-  item.addEventListener('dragleave', dragLeaveForItem);
   item.addEventListener('drop', dropForItem);
 });
 
