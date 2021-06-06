@@ -1,51 +1,97 @@
 // Import stylesheets
 import './style.css';
+import { isDraggableSupported } from './isDraggableSupported';
+import { dragEnter, dragOver, dragLeave } from './dragDefaultMethods';
+const draggableItems = document.querySelectorAll('article');
+const dropAreas = document.querySelectorAll('main');
 
-// import { isDraggableSupported } from './isDraggableSupported';
+//--- check browser support ---
 
-let draggablesElems = document.querySelectorAll('article');
-let dropArea = document.querySelectorAll('main');
+if (!isDraggableSupported()) {
+  return;
+}
 
-// isDraggableSupported();
+//--- DRAG ---
 
-// ---------------- drag ----------------------
-
-document.querySelectorAll('article').forEach(article => {
-  article.addEventListener('dragstart', e => {
-    console.log(document.querySelectorAll('article'));
-    console.log('start');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', article.outerHTML);
-    article.classList.add('dragging');
-  });
-
-  article.addEventListener('dragend', e => {
-    if (e.dataTransfer.dropEffect == 'move') {
-      article.classList.remove('dragging');
-      article.parentNode.removeChild(article);
-    }
-  });
+draggableItems.forEach(item => {
+  item.addEventListener('dragstart', dragStart);
+  item.addEventListener('dragend', dragEnd);
+  item.addEventListener('dragenter', dragEnterForItem);
+  item.addEventListener('dragleave', dragLeaveForItem);
+  item.addEventListener('drop', dropForItem);
 });
 
-// ---------------- drop ----------------------
+function dragStart() {
+  this.classList.add('dragging');
+}
 
-document.querySelectorAll('main').forEach(main => {
-  main.addEventListener('mouseenter', () => {
-    draggablesElems = document.querySelectorAll('article');
-    dropArea = document.querySelectorAll('main');
-  });
+function dragEnd(e) {
+  if (e.target.classList.contains('dragging')) {
+    e.target.classList.remove('dragging');
+  }
+}
 
-  main.addEventListener('dragover', e => {
-    console.log('dragover');
-    e.preventDefault();
-    return false;
-  });
+function findUpTag(el, tag) {
+  while (el.parentNode) {
+    el = el.parentNode;
+    if (el.tagName === tag) return el;
+  }
+  return null;
+}
 
-  main.addEventListener('drop', e => {
-    console.log(document.querySelectorAll('main'));
-    e.preventDefault();
-    const data = e.dataTransfer.getData('text/html');
-    const fragment = document.createRange().createContextualFragment(data);
-    main.appendChild(fragment);
-  });
+//--- DROP-OVER-ITEM ---
+
+function dragEnterForItem(e) {
+  const article = findUpTag(e.target, 'ARTICLE');
+
+  if (article === null) {
+    return;
+  }
+
+  const isNotDragging = !article.classList.contains('dragging');
+
+  if (isNotDragging) {
+    article.classList.add('dropped');
+  }
+}
+
+function dragLeaveForItem(e) {
+  const article = findUpTag(e.target, 'ARTICLE');
+  if (article === null) {
+    return;
+  }
+
+  const isDropped = article.classList.contains('dropped');
+
+  if (isDropped) {
+    article.classList.remove('dropped');
+  }
+}
+
+function dropForItem(e) {
+  const article = findUpTag(e.target, 'ARTICLE');
+  const main = findUpTag(e.target, 'MAIN');
+  const dragging = document.querySelector('.dragging');
+
+  main.insertBefore(dragging, article);
+}
+
+//--- DROP ---
+
+dropAreas.forEach(area => {
+  area.addEventListener('dragenter', dragEnter);
+  area.addEventListener('dragover', dragOver);
+  area.addEventListener('dragleave', dragLeave);
+  area.addEventListener('drop', drop);
 });
+
+function drop(e) {
+  e.preventDefault();
+
+  const nodeName = e.target.nodeName === 'MAIN';
+  const dragging = document.querySelector('.dragging');
+
+  if (dragging && nodeName) {
+    e.target.appendChild(dragging);
+  }
+}
